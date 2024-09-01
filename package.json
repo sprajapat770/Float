@@ -4,8 +4,10 @@
   "description": "This is An Ecommerce Platform.",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "manage-component": "node scripts/command.js"
+    "manage-component": "node scripts/command.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "Ecommerce"
@@ -13,6 +15,7 @@
   "author": "Suraj Prajapat",
   "license": "ISC",
   "dependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
     "app-root-path": "^3.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -20,7 +23,11 @@
     "libxmljs2": "^0.35.0",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
     "sequelize": "^6.37.3",
+    "vite": "^5.4.2",
     "xml2js": "^0.6.2"
   },
   "devDependencies": {

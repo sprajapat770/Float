@@ -52,6 +52,10 @@ fs.readdirSync(componentsDir).forEach(component => {
     }
 });
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'core/theme/dist', 'index.html'));
+});
+
 // set port, listen for requests
 const PORT = process.env.NODE_LOCAL_PORT || 8080;
 app.listen(PORT, () => {

@@ -19,10 +19,13 @@ services:
   app:
     depends_on:
       - postgresdb
-    build: ./
+    build: 
+      context: .
+      dockerfile: Dockerfile
     env_file: ./app/config/.env
     ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      # - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      - "4173:4173"
     environment:
       - DB_HOST=postgresdb
       - DB_USER=$POSTGRESDB_USER
@@ -34,6 +37,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    command: npm run preview
     networks:
       - my_network
 

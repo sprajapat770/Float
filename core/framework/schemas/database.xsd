@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <!-- Core Components for database schema definition -->
+    <!-- Define a custom type for length -->
+    <xs:simpleType name="lengthType">
+        <xs:restriction base="xs:string">
+            <!-- Regular expression to match patterns like '10,2' -->
+            <xs:pattern value="\d+|\d+,\d+" />
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Basic column type with common attributes -->
+    <xs:complexType name="columnType">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="type" type="xs:string" use="required"/>
+        <xs:attribute name="length" type="lengthType" use="optional"/>
+        <xs:attribute name="default" type="xs:string" use="optional"/>
+        <xs:attribute name="nullable" type="xs:boolean" default="true"/>
+        <xs:attribute name="primary" type="xs:boolean" default="false"/>
+        <xs:attribute name="foreignKey" type="xs:string" use="optional"/>
+        <xs:attribute name="comment" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <!-- Definition of a table -->
+    <xs:complexType name="table">
+        <xs:sequence>
+            <xs:element name="column" type="columnType" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="constraint" type="constraintType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="engine" type="engineType" default="innodb"/>
+        <xs:attribute name="charset" type="xs:string" default="utf8"/>
+        <xs:attribute name="collation" type="xs:string" default="utf8_general_ci"/>
+        <xs:attribute name="comment" type="xs:string" use="optional"/>
+    </xs:complexType>
+
+    <!-- Constraint definitions -->
+    <xs:complexType name="constraintType">
+        <xs:sequence>
+            <xs:element name="primaryKey" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute name="column" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="foreignKey" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="column" type="xs:string" use="required"/>
+                    <xs:attribute name="referenceTable" type="xs:string" use="required"/>
+                    <xs:attribute name="referenceColumn" type="xs:string" use="required"/>
+                    <xs:attribute name="onDelete" type="xs:string" use="optional" default="CASCADE"/>
+                    <xs:attribute name="onUpdate" type="xs:string" use="optional" default="RESTRICT"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Root element -->
+    <xs:element name="schema">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="table" type="table" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="uniqueTableName">
+            <xs:annotation>
+                <xs:documentation>Table name must be unique</xs:documentation>
+            </xs:annotation>
+            <xs:selector xpath="table"/>
+            <xs:field xpath="@name"/>
+        </xs:unique>
+    </xs:element>
+
+    <!-- Engine types supported -->
+    <xs:simpleType name="engineType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="innodb"/>
+            <xs:enumeration value="memory"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

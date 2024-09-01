@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const testProduct = require("./test_product");
-
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config({ path: 'app/config/.env' })
+// const testProduct = require("./test_product");
 const app = express();
 
 var corsOptions = {
@@ -36,6 +38,20 @@ app.get("/test-product", async (req, res) => {
   // await testProduct(db.sequelize, db.product);
   res.json({ message: "Welcome to bezkoder application." });
 });
+
+
+// Dynamically load all routes from the core/components directory
+const componentsDir = path.join(__dirname, 'core/components');
+fs.readdirSync(componentsDir).forEach(component => {
+    const routesPath = path.join(componentsDir, component, 'routes');
+    if (fs.existsSync(routesPath)) {
+        fs.readdirSync(routesPath).forEach(file => {
+            const route = require(path.join(routesPath, file));
+            app.use(`/api/${component}`, route);
+        });
+    }
+});
+
 // set port, listen for requests
 const PORT = process.env.NODE_LOCAL_PORT || 8080;
 app.listen(PORT, () => {

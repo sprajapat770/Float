@@ -13,11 +13,13 @@ services:
       - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
     volumes:
       - db:/var/lib/postgres
+    networks:
+      - my_network
+      
   app:
     depends_on:
       - postgresdb
     build: ./
-    restart: unless-stopped
     env_file: ./.env
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
@@ -29,6 +31,15 @@ services:
       - DB_PORT=$POSTGRESDB_DOCKER_PORT
     stdin_open: true
     tty: true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - my_network
 
 volumes: 
   db:
+
+networks:
+  my_network:
+    driver: bridge

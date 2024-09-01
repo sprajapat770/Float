@@ -1,0 +1,12 @@
+{
+  "catalog": {
+    "active": false,
+    "version": "1.0.0",
+    "description": ""
+  },
+  "order": {
+    "active": true,
+    "version": "1.0.0",
+    "description": ""
+  }
+}

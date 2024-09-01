@@ -12,8 +12,6 @@ const readXmlFiles = async (sequelize, dirPath) => {
     const components = fs.readdirSync(dirPath);
 
     for (const component of components) {
-
-        
         // Database Setup
         const xmldDir = path.join(dirPath, component, 'schema');
         if (fs.existsSync(xmldDir)) {

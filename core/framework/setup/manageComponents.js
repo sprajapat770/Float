@@ -86,6 +86,7 @@ function generateComponents() {
     // Write the updated status to activeComponents.json
     fs.writeFileSync(activeComponentsPath, JSON.stringify(updatedComponentsStatus, null, 2));
     console.log('activeComponents.json has been updated based on the core/components directory.');
+    const db = require("../database/config/connection");
 }
 
 

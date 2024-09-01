@@ -6,11 +6,12 @@
     <table name="order_table" engine="innodb" charset="utf8" collation="utf8_general_ci" comment="Order table">
         <!-- Columns definition -->
         <column name="order_id" type="int" length="11" primary="true" nullable="false" comment="Primary key for product"/>
-        <column name="sku" type="varchar" length="64" nullable="false" default="N/A" comment="Stock Keeping Unit"/>
+        <!-- <column name="sku" type="varchar" length="64" nullable="false" default="N/A" comment="Stock Keeping Unit"/> -->
         <column name="name" type="varchar" length="255" nullable="false" comment="Product name"/>
         <column name="price" type="decimal" length="10,2" nullable="false" default="0.00" comment="Product price"/>
         <column name="created_at" type="datetime" nullable="false" comment="Creation timestamp"/>
         <column name="updated_at" type="datetime" nullable="true" comment="Last update timestamp"/>
+        <column name="notww" type="datetime" nullable="true" comment="Last timestamp"/>
         
         <!-- Constraint definition -->
         <constraint>

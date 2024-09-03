@@ -134,6 +134,7 @@ Docker is used to containerize the application, ensuring a consistent environmen
 1. **Build and start containers:**
 
    ```bash
+   docker compose --env-file app/config/.env up -d --build
    docker-compose up -d
    ```
 

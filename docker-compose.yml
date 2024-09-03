@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   postgresdb:
     image: postgres
     restart: unless-stopped
-    env_file: ./app/config/.env
+    env_file: ./.env
     environment:
       - POSTGRES_USER=$POSTGRESDB_USER
       - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
@@ -19,10 +17,14 @@ services:
   app:
     depends_on:
       - postgresdb
-    build: ./
-    env_file: ./app/config/.env
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    env_file: ./.env
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      - "4173:4173"
     environment:
       - DB_HOST=postgresdb
       - DB_USER=$POSTGRESDB_USER
@@ -34,6 +36,8 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - /app/dist
+    # command: npm run build
     networks:
       - my_network
 

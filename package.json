@@ -7,7 +7,22 @@
     "manage-component": "node scripts/command.js",
     "dev": "node server.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:component": "node run-tests.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ]
   },
   "keywords": [
     "Ecommerce"
@@ -32,7 +47,9 @@
   },
   "devDependencies": {
     "husky": "^9.1.5",
+    "jest": "^29.7.0",
     "lint-staged": "^15.2.9",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0"
   }
 }

@@ -52,8 +52,13 @@ fs.readdirSync(componentsDir).forEach(component => {
     }
 });
 
+// Serve static files in development mode
+app.use(express.static(path.join(__dirname, 'dist')));
+
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'core/theme/dist', 'index.html'));
+  let pathDir = path.join(__dirname, 'dist', 'index.html');
+  console.log(pathDir);
+  res.sendFile(pathDir);
 });
 
 // set port, listen for requests

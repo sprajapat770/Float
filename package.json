@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "manage-component": "node scripts/command.js",
-    "dev": "vite",
+    "dev": "node server.js",
     "build": "vite build",
     "preview": "vite preview"
   },

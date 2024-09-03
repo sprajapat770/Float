@@ -1,24 +1,45 @@
-# Using Lightweight docker image for node
-FROM node:20-alpine AS base
+# Stage 1: Build Stage
+FROM node:20-alpine AS build
 
-# Setting Up Working Directory
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json for dependency installation
 COPY package*.json ./
-
-# Install dependencies including Vite
-RUN npm install
-
-# Copy all files to the working directory
+RUN ls -lrtha
+# Install all dependencies, including dev dependencies
+RUN npm ci
+RUN ls -lrtha
+# Copy the rest of the application source code
 COPY . .
 
-# Run the build command
+RUN ls -lrtha
+# Compile TypeScript to JavaScript
+# RUN npm run build
+
+# RUN ls -lrtha dist/
+RUN pwd
+# CMD ["npm", "run", "dev"]
+
+# Stage 2: Production Stage
+FROM node:20-alpine AS production
+
+# Set the working directory
+WORKDIR /app
+
+# Copy only the necessary files from the build stage
+COPY --from=build /app/. ./
+
+RUN pwd
+
+RUN ls -lrtha
+
+# RUN ls -lrtha dist/
+
+# Install only production dependencies
+RUN npm ci --omit=dev
+
 RUN npm run build
 
-# Expose the port the app runs on
-EXPOSE 3000
-EXPOSE 4173
-
-# Command to run the application
-CMD ["npm", "run", "preview"]
+# Start the application
+CMD ["npm", "run", "dev"]
